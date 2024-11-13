@@ -1,0 +1,25 @@
+[package]
+name = "goxoy_sui_chain"
+version = "0.1.0"
+edition = "2021"
+authors = ["Omer GOKSOY <goksoy.omer@gmail.com>"]
+license = "MIT"
+repository = "https://github.com/goxoy/goxoy_sui_chain/"
+keywords = ["sui-network-library","sui-chain-library"]
+description = "Sui Network SDK Library"
+
+[dependencies]
+sui_sdk = { git = "https://github.com/mystenlabs/sui", package = "sui-sdk"}
+sui_json_rpc_types = { git = "https://github.com/mystenlabs/sui", package = "sui-json-rpc-types"}
+sui_types = { git = "https://github.com/mystenlabs/sui", package = "sui-types"}
+sui_config = { git = "https://github.com/mystenlabs/sui", package = "sui-config"}
+sui_keys = { git = "https://github.com/mystenlabs/sui", package = "sui-keys"}
+shared_crypto = { git = "https://github.com/mystenlabs/sui", package = "shared-crypto"}
+#fastcrypto = { git = "https://github.com/mystenlabs/sui", package = "fastcrypto"}
+fastcrypto = "0.1.8"
+bcs = "0.1.6"
+anyhow = "1.0"
+serde = "1.0.210"
+rand = "0.8.5"
+base58 = "0.2.0"
+base64 = "0.22.1"
