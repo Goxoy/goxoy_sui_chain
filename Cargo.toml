@@ -9,13 +9,13 @@ keywords = ["sui-network-library","sui-chain-library"]
 description = "Sui Network SDK Library"
 
 [dependencies]
-sui_sdk = { git = "https://github.com/mystenlabs/sui", package = "sui-sdk"}
-sui_json_rpc_types = { git = "https://github.com/mystenlabs/sui", package = "sui-json-rpc-types"}
-sui_types = { git = "https://github.com/mystenlabs/sui", package = "sui-types"}
-sui_config = { git = "https://github.com/mystenlabs/sui", package = "sui-config"}
-sui_keys = { git = "https://github.com/mystenlabs/sui", package = "sui-keys"}
-shared_crypto = { git = "https://github.com/mystenlabs/sui", package = "shared-crypto"}
-#fastcrypto = { git = "https://github.com/mystenlabs/sui", package = "fastcrypto"}
+sui_sdk = { git = "https://github.com/mystenlabs/sui", package = "sui-sdk", branch="main"}
+sui_json_rpc_types = { git = "https://github.com/mystenlabs/sui", package = "sui-json-rpc-types", branch="main"}
+sui_types = { git = "https://github.com/mystenlabs/sui", package = "sui-types", branch="main"}
+sui_config = { git = "https://github.com/mystenlabs/sui", package = "sui-config", branch="main"}
+sui_keys = { git = "https://github.com/mystenlabs/sui", package = "sui-keys", branch="main"}
+shared_crypto = { git = "https://github.com/mystenlabs/sui", package = "shared-crypto", branch="main"}
+#fastcrypto = { git = "https://github.com/mystenlabs/sui", package = "fastcrypto", branch="main", rev="6ea6bc9"}
 fastcrypto = "0.1.8"
 bcs = "0.1.6"
 anyhow = "1.0"
