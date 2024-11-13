@@ -33,24 +33,19 @@ sui-rust-lib = "0.1.0"
 ### Usage
 
 ```rust
-use sui_rust_lib::SuiClient;
+use goxoy_sui_chain::SuiNetwork;
 
 fn main() {
-    let client = SuiClient::new("https://rpc.sui.io/");
-    match client.get_balance("your_address") {
-        Ok(balance) => println!("Balance: {}", balance),
+    let client = SuiNetwork::new(Some("https://fullnode.mainnet.sui.io:443".to_string()));
+    match client.connect().await {
+        Ok(client) => {
+            let last_checkpoint_no=client.get_latest_checkpoint_no().unwrap_or(0);
+            println!("last_checkpoint_no: {}",last_checkpoint_no);
+        },
         Err(e) => eprintln!("Error fetching balance: {}", e),
     }
 }
 ```
-
-### Examples
-
-Refer to the `examples` directory for more usage examples, including:
-
-- Retrieving account balances.
-- Sending transactions.
-- Querying smart contract states.
 
 ## Contributing
 
