@@ -2326,6 +2326,7 @@ dependencies = [
  "fastcrypto 0.1.8 (registry+https://github.com/rust-lang/crates.io-index)",
  "rand",
  "serde",
+ "serde_json",
  "shared-crypto",
  "sui-config",
  "sui-json-rpc-types",
