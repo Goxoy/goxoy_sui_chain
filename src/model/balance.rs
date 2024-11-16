@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 use sui_json_rpc_types::BalanceChange;
 use crate::sui_lib::sui_format_volume;
 
-#[derive(Debug, Clone, Eq, PartialEq, Serialize, Deserialize)]
+#[derive(Debug, Clone, Eq, PartialEq, serde::Serialize, serde::Deserialize)]
 pub enum AccountHistory {
     ReceiveCoin(CoinDetail),
     SentCoin(CoinDetail),
@@ -13,7 +13,7 @@ pub enum AccountHistory {
     ComplexTransaction(ComplexTransactionDetails),
 }
 
-#[derive(Debug, Clone, Eq, PartialEq, Serialize, Deserialize)]
+#[derive(Debug, Clone, Eq, PartialEq, serde::Serialize, serde::Deserialize)]
 pub enum AccountPrintOption {
     All,
     Receive,
@@ -121,7 +121,7 @@ impl AccountHistoryExtension for Vec<AccountHistory> {
     }
 }
 
-#[derive(Debug, Clone, Eq, PartialEq,Serialize, Deserialize)]
+#[derive(Debug, Clone, Eq, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct StakeDetail {
     pub digest: String,
     pub time: u128,
@@ -131,7 +131,7 @@ pub struct StakeDetail {
     pub formated_volume: String,
 }
 
-#[derive(Debug, Clone, Eq, PartialEq, Serialize, Deserialize)]
+#[derive(Debug, Clone, Eq, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct ComplexTransactionDetails {
     pub digest: String,
     pub time: u128,
@@ -143,7 +143,7 @@ pub struct ComplexTransactionDetails {
     pub balance_list: Vec<BalanceChange>,
 }
 
-#[derive(Debug, Clone, Eq, PartialEq, PartialOrd, Ord,Serialize, Deserialize)]
+#[derive(Debug, Clone, Eq, PartialEq, PartialOrd, Ord, serde::Serialize, serde::Deserialize)]
 pub struct CoinDetail {
     pub digest: String,
     pub time: u128,
@@ -155,7 +155,7 @@ pub struct CoinDetail {
     pub formated_volume: String,
 }
 
-#[derive(Debug, Clone, Eq, PartialEq, PartialOrd, Ord,Serialize, Deserialize)]
+#[derive(Debug, Clone, Eq, PartialEq, PartialOrd, Ord, serde::Serialize, serde::Deserialize)]
 pub struct ReceiveTokenDetails {
     pub digest: String,
     pub time: u128,
@@ -167,7 +167,7 @@ pub struct ReceiveTokenDetails {
     pub formated_volume: String,
 }
 
-#[derive(Debug, Clone, Eq, PartialEq, PartialOrd, Ord,Serialize, Deserialize)]
+#[derive(Debug, Clone, Eq, PartialEq, PartialOrd, Ord, serde::Serialize, serde::Deserialize)]
 pub struct SentTokenDetails {
     pub digest: String,
     pub time: u128,
@@ -181,7 +181,7 @@ pub struct SentTokenDetails {
     pub formated_gas: String,
 }
 
-#[derive(Debug, Clone, Eq, PartialEq, PartialOrd, Ord,Serialize, Deserialize)]
+#[derive(Debug, Clone, Eq, PartialEq, PartialOrd, Ord, serde::Serialize, serde::Deserialize)]
 pub struct SwapDetails {
     pub digest: String,
     pub time: u128,
