@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 authors = ["Omer GOKSOY <goksoy.omer@gmail.com>"]
 license = "MIT"
-repository = "https://github.com/goxoy/goxoy_sui_chain/"
+repository = "https://github.com/goxoy/goxoy_sui_chain"
 keywords = ["sui-network-library","sui-chain-library"]
 description = "Sui Network SDK Library"
 
