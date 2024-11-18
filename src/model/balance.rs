@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-use sui_json_rpc_types::BalanceChange;
+use sui_json_rpc_types::{BalanceChange, SuiGasData};
 use crate::sui_lib::sui_format_volume;
 
 #[derive(Debug, Clone, Eq, PartialEq, Serialize, Deserialize)]
@@ -141,6 +141,7 @@ pub struct ComplexTransactionDetails {
     pub address_list: Vec<String>,
     pub currency_list: Vec<String>,
     pub balance_list: Vec<BalanceChange>,
+    pub gas_data: Option<SuiGasData>,
 }
 
 #[derive(Debug, Clone, Eq, PartialEq, PartialOrd, Ord, Serialize, Deserialize)]

@@ -5,7 +5,7 @@ use base64::{prelude::BASE64_STANDARD, Engine};
 use fastcrypto::hash::{Blake2b256, HashFunction};
 use shared_crypto::intent::{Intent, IntentMessage};
 use sui_json_rpc_types::{
-    SuiObjectData, SuiObjectDataOptions, SuiPastObjectResponse, SuiTransactionBlockResponse
+    SuiGasData, SuiObjectData, SuiObjectDataOptions, SuiPastObjectResponse, SuiTransactionBlockData, SuiTransactionBlockResponse
 };
 use sui_sdk::{
     rpc_types::SuiTransactionBlockResponseOptions, types::transaction::TransactionData, SuiClient,
@@ -620,6 +620,16 @@ impl SuiNetwork {
         tx_details: SuiTransactionBlockResponse,
         my_wallet_address: SuiAddress,
     ) -> Vec<AccountHistory> {
+        let gas_data:Option<SuiGasData>=match tx_details.transaction.clone() {
+            Some(inner_details) => {
+                match inner_details.data {
+                    SuiTransactionBlockData::V1(sui_transaction_block_data_v1) => {
+                        Some(sui_transaction_block_data_v1.gas_data)
+                    },
+                }
+            },
+            None => None,
+        };
         let block_time = tx_details.timestamp_ms.unwrap_or(0) as u128;
         let block_no = tx_details.checkpoint.unwrap_or(0) as u128;
         let tx_digest = tx_details.digest.clone().to_string();
@@ -1048,6 +1058,7 @@ impl SuiNetwork {
                         address_list: address_list.clone(),
                         currency_list: currency_list.clone(),
                         balance_list: balance_list.clone(),
+                        gas_data: gas_data.clone(),
                     },
                 ));
                 return result_list;
