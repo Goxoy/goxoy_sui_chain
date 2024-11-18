@@ -315,19 +315,14 @@ impl SuiNetwork {
         match SuiNetwork::string_to_address_object(wallet_address.clone()) {
             Ok(converted_wallet_addr) => {
                 match self.get_wallet_history(converted_wallet_addr.clone()).await {
-                    Ok(result_list) => {
-                        Some(result_list)
-                    },
-                    Err(_) => {
-                        None
-                    },
+                    Ok(result_list) =>Some(result_list),
+                    Err(_) =>None,
                 }
             },
-            Err(_) => {
-                None
-            },
+            Err(_) =>None,
         }
     }
+
     pub async fn get_wallet_history(
         &mut self,
         wallet_address: SuiAddress,
