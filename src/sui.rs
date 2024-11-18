@@ -308,6 +308,26 @@ impl SuiNetwork {
         }
     }
 
+    pub async fn get_wallet_history_with_wallet_hex(
+        &mut self,
+        wallet_address: String,
+    ) -> Option<Vec<AccountHistory>> {
+        match SuiNetwork::string_to_address_object(wallet_address.clone()) {
+            Ok(converted_wallet_addr) => {
+                match self.get_wallet_history(converted_wallet_addr.clone()).await {
+                    Ok(result_list) => {
+                        Some(result_list)
+                    },
+                    Err(_) => {
+                        None
+                    },
+                }
+            },
+            Err(_) => {
+                None
+            },
+        }
+    }
     pub async fn get_wallet_history(
         &mut self,
         wallet_address: SuiAddress,
