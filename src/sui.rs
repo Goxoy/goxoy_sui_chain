@@ -5,7 +5,7 @@ use base64::{prelude::BASE64_STANDARD, Engine};
 use fastcrypto::hash::{Blake2b256, HashFunction};
 use shared_crypto::intent::{Intent, IntentMessage};
 use sui_json_rpc_types::{
-    SuiObjectDataOptions, SuiPastObjectResponse, SuiTransactionBlockResponse,
+    SuiObjectData, SuiObjectDataOptions, SuiPastObjectResponse, SuiTransactionBlockResponse
 };
 use sui_sdk::{
     rpc_types::SuiTransactionBlockResponseOptions, types::transaction::TransactionData, SuiClient,
@@ -321,6 +321,155 @@ impl SuiNetwork {
             },
             Err(_) =>None,
         }
+    }
+
+    pub async fn get_wallet_object(
+        &mut self,
+        wallet_address: String,
+    )->Option<Vec<SuiObjectData>>{
+        if self.sui_client.is_none() {
+            return None;
+            // return Err(anyhow::Error::msg("not-connected-to-SUI-node"));
+        }
+        let wallet_addr_obj=SuiNetwork::string_to_address_object(wallet_address.clone());
+        if wallet_addr_obj.is_err(){
+            return None;
+        }
+
+        let mut result_list=Vec::new();
+        let wallet_addr_obj=wallet_addr_obj.unwrap();
+        let limit: usize = 20;
+        let mut current_cursor = None;
+        // let mut result_list = Vec::new();
+        // let sui = SuiClientBuilder::default().build(node_addr).await.unwrap();
+        // let key_pair=self.key_pair.as_mut().unwrap().borrow_mut().copy();
+        let sui_client = self.sui_client.as_mut().unwrap().borrow_mut();
+        let mut counter = 1;
+        'inner_loop: loop {
+            match sui_client
+                .read_api()
+                .get_owned_objects(wallet_addr_obj, None, current_cursor, Some(limit))
+                .await
+            {
+                Ok(owned_objects) => {
+                    if owned_objects.data.len() == 0 {
+                        break 'inner_loop;
+                    }
+                    for object in owned_objects.data.iter() {
+                        counter = counter + 1;
+                        let object_data = object.data.as_ref().unwrap_or_else(|| {
+                            panic!("No object data for this SuiObjectResponse {:?}", object)
+                        });
+                        result_list.push(object_data.clone());
+
+                        let object_id = object_data.object_id;
+                        current_cursor = Some(object_id.clone());
+                        
+                        
+                        /*
+                        let version = object_data.version;
+                        let sui_data_options = SuiObjectDataOptions {
+                            show_type: true,
+                            show_owner: true,
+                            show_previous_transaction: true,
+                            show_display: true,
+                            show_content: true,
+                            show_bcs: true,
+                            show_storage_rebate: true,
+                        };
+                        let past_object = sui_client
+                            .read_api()
+                            .try_get_parsed_past_object(
+                                object_id,
+                                version,
+                                sui_data_options.clone(),
+                            )
+                            .await;
+                        match past_object {
+                            Ok(past_object) => {
+                                match past_object {
+                                    SuiPastObjectResponse::VersionFound(sui_object_data) => {
+                                        match sui_object_data.previous_transaction {
+                                            Some(prev_tx) => {
+                                                match sui_client
+                                                    .read_api()
+                                                    .get_transaction_with_options(
+                                                        prev_tx,
+                                                        SuiTransactionBlockResponseOptions {
+                                                            show_input: true,
+                                                            show_raw_input: true,
+                                                            show_effects: true,
+                                                            show_events: true,
+                                                            show_object_changes: true,
+                                                            show_balance_changes: true,
+                                                            show_raw_effects: true,
+                                                        },
+                                                    )
+                                                    .await
+                                                {
+                                                    Ok(tx_result) => match tx_result.status_ok() {
+                                                        Some(status) => {
+                                                            if status == true {
+                                                                let receive_list=SuiNetwork::organize_balance_list(tx_result.clone(),wallet_address.clone());
+                                                                for b_item in receive_list.iter() {
+                                                                    result_list
+                                                                        .push(b_item.clone());
+                                                                }
+                                                            }
+                                                        }
+                                                        None => {
+                                                            println!("status UNKNOWN");
+                                                        }
+                                                    },
+                                                    Err(_) => {
+                                                        println!("tx-error");
+                                                    }
+                                                }
+                                            }
+                                            None => {
+                                                println!("tx-none");
+                                            }
+                                        };
+                                    }
+                                    SuiPastObjectResponse::ObjectNotExists(object_id) => {
+                                        dbg!(object_id);
+                                    }
+                                    SuiPastObjectResponse::ObjectDeleted(sui_object_ref) => {
+                                        dbg!(sui_object_ref);
+                                    }
+                                    SuiPastObjectResponse::VersionNotFound(
+                                        object_id,
+                                        sequence_number,
+                                    ) => {
+                                        dbg!(object_id);
+                                        dbg!(sequence_number);
+                                    }
+                                    SuiPastObjectResponse::VersionTooHigh {
+                                        object_id,
+                                        asked_version,
+                                        latest_version,
+                                    } => {
+                                        dbg!(object_id);
+                                        dbg!(asked_version);
+                                        dbg!(latest_version);
+                                    }
+                                };
+                            }
+                            Err(_) => {
+                                println!("past object error");
+                            }
+                        }
+                        
+                        */
+                    }
+                }
+                Err(_) => {
+                    println!("owned objects error");
+                    return Some(result_list);
+                }
+            }
+        }
+        Some(result_list)
     }
 
     pub async fn get_wallet_history(
