@@ -323,6 +323,13 @@ impl SuiNetwork {
         }
     }
 
+
+
+    // bu fonksiyon henüz tamamlanmadı.!
+    // bu fonksiyon henüz tamamlanmadı.!
+    // bu fonksiyon henüz tamamlanmadı.!
+    // bu fonksiyon henüz tamamlanmadı.!
+    // bu fonksiyon henüz tamamlanmadı.!
     pub async fn get_wallet_object(
         &mut self,
         wallet_address: String,
